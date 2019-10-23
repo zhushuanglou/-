@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="95b979c4-cfcc-4d3c-b249-87fec4ac95fc" name="book" url="http:///home/feitas/odoo-10.0/myaddons/">
+        <fileTransfer host="192.168.56.101" port="22" rootFolder="/home/feitas/odoo-10.0/myaddons/book" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

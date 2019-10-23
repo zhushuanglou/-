@@ -1,0 +1,130 @@
+<odoo>
+  <data>
+<!-- 创建模型book.manage的tree视图，视图显示name，author两个字段。视图的外部id叫view_book_list-->
+    <record id="view_book_list" model="ir.ui.view">
+      <field name="name">view.book.list</field>
+      <field name="model">book.manage</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="author"/>
+        </tree>
+      </field>
+    </record>
+
+<!-- 创建模型book.manage的form视图-->
+    <record id="view_manage_form" model="ir.ui.view">
+      <field name="name">view.manage.form</field>
+      <field name="model">book.manage</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>    
+              <group>
+                <field name="name"/>
+                <field name="author"/>
+                <field name="price"/>
+              </group>
+              <group>
+                <field name="picture" widget="image"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+<!-- 创建模型book.manage的kanban视图-->
+    <record id="view_book_kanban" model="ir.ui.view">
+      <field name="name">view.book.kanban</field>
+      <field name="model">book.manage</field>
+      <field name="arch" type="xml">
+        <kanban class="o_book_manage_kanban">
+          <field name="picture"/>
+          <field name="name"/>
+          <field name="author"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div>
+                <div class="o_kanban_image">
+                  <img t-att-src="kanban_image('book.manage', 'picture', record.id.value)"/>
+                </div>
+                <div class="oe_kanban_details">
+                  <strong>
+                    <field name="name"/>
+                  </strong>
+                  <field name="author" />
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+<!-- 创建模型book.sub的tree视图-->
+    <record id="view_sub_list" model="ir.ui.view">
+      <field name="name">view.sub.list</field>
+      <field name="model">book.sub</field>
+      <field name="group_id" eval="[(4,ref('book.group_yonghu'))]"/>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="author"/>
+        </tree>
+      </field>
+    </record>
+
+<!-- 创建模型book.sub的form视图-->
+    <record id="view_sub_from" model="ir.ui.view">
+      <field name="name">view.sub.from</field>
+      <field name="model">book.sub</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+<!-- 在<header>部分加两个按钮，btn_submit只有申购单状态为draft，属于group_yonghu能看到-->          
+          <button name='btn_submit' string='提交' type="object" states='draft' groups="book.group_yonghu"/>
+          <button name='btn_ver' string='验证' type="object" states='done' groups="book.group_guanliyuan"/>
+          <field name='state' widget='statusbar' statusbar_visible='draft,done'/>
+          </header>
+          <sheet>
+            <group>    
+              <group>
+                <field name="name"/>
+                <field name="author"/>
+                <field name="price"/>
+              </group>
+              <group>
+                <field name="picture" widget="image"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+<!-- 创建模型book.manage的动作-->
+    <record model="ir.actions.act_window" id="action_book">
+      <field name="name">图书</field>
+      <field name="res_model">book.manage</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+<!-- 创建模型book.sube的动作-->
+      <record model="ir.actions.act_window" id="action_subscribe">
+      <field name="name">申购</field>
+      <field name="res_model">book.sub</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+<!-- 创建一级菜单menu_book_root，前端显示图书管理系统 -->
+    <menuitem name="图书管理系统" id="menu_book_root"/>
+<!-- 创建二级菜单menu_book，前端显示图书列表，点击这个菜单触发外部id为action_book的动作，由动作再传递到该模型的tree与form视图 -->
+    <menuitem name="图书列表" id="menu_book" parent="menu_book_root" action="action_book" sequence="5"/>
+    <menuitem name="用户申购" id="menu_subscribe_yonghu" parent="menu_book_root" action="action_subscribe" groups="book.group_yonghu" sequence="7"/> 
+    <menuitem name="申购列表" id="menu_subscribe" parent="menu_book_root" action="action_subscribe" groups="book.group_guanliyuan" sequence="10"/>
+
+  </data>
+</odoo>

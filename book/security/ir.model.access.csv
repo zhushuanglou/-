@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_book_manage_yonghu,book_manage_yonghu,model_book_manage,book.group_yonghu,1,0,0,0
+access_book_manage_guanliyuan,book_manage_guanliyuan,model_book_manage,book.group_guanliyuan,1,1,1,1
+access_book_sub,book_sub,model_book_sub,1,1,1,1
